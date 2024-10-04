@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { TooltipRootEmits } from 'radix-vue'
 import type { NTooltipProps } from '../../../types'
-import { useForwardPropsEmits } from 'radix-vue'
 
+import { useForwardPropsEmits } from 'radix-vue'
 import TooltipContent from './TooltipContent.vue'
 import TooltipProvider from './TooltipProvider.vue'
 import TooltipRoot from './TooltipRoot.vue'
@@ -40,6 +40,7 @@ const forwarded = useForwardPropsEmits(props, emits)
         :tooltip
         :disabled
         :una="forwarded.una?.tooltipContent"
+        :data-animate="dataAnimate || _tooltipContent?.dataAnimate"
       >
         <slot name="content">
           {{ content }}

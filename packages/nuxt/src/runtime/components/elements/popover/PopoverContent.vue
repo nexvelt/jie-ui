@@ -23,7 +23,7 @@ const props = withDefaults(
 const emits = defineEmits<PopoverContentEmits>()
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+  const { dataAnimate: __, class: _, ...delegated } = props
 
   return delegated
 })
@@ -39,8 +39,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
         cn(
           'popover-content',
           props.class,
-        )
-      "
+        )"
+      :data-animate
     >
       <slot />
     </PopoverContent>

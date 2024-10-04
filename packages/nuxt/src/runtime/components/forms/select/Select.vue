@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { SelectRootEmits } from 'radix-vue'
 import type { NSelectProps } from '../../../types'
+import { reactiveOmit } from '@vueuse/core'
 import {
   useForwardPropsEmits,
 } from 'radix-vue'
 import { computed, provide } from 'vue'
-import { isEqualObject, omitProps } from '../../../utils'
+import { isEqualObject } from '../../../utils'
 import SelectContent from './SelectContent.vue'
 import SelectGroup from './SelectGroup.vue'
 import SelectItem from './SelectItem.vue'
@@ -23,11 +24,17 @@ const emits = defineEmits<SelectRootEmits>()
 
 const modelValue = defineModel<any>('modelValue')
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+const delegatedProps = reactiveOmit(props, [
+  'class',
+  'items',
+  'multipleGroup',
+  'itemAttribute',
+  'placeholder',
+  'label',
+  'id',
+  'select',
+])
 
-  return delegated
-})
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 const transformerValue = computed(() => {
@@ -47,7 +54,7 @@ provide('selectModelValue', modelValue)
 
 <template>
   <SelectRoot
-    v-bind="omitProps(forwarded, ['items', 'multipleGroup', 'itemAttribute', 'placeholder', 'label', 'id', 'select'])"
+    v-bind="forwarded"
     :model-value="transformerValue"
   >
     <SelectTrigger
@@ -76,6 +83,7 @@ provide('selectModelValue', modelValue)
         _selectScrollDownButton: forwarded._selectScrollDownButton,
         _selectScrollUpButton: forwarded._selectScrollUpButton,
         _selectViewport: forwarded._selectViewport,
+        dataAnimate: dataAnimate || _selectContent?.dataAnimate,
       }"
     >
       <slot name="content" :items="forwarded.items">

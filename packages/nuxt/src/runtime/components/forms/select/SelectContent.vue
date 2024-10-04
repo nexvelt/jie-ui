@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { NSelectContentProps } from '../../../types'
+import { reactiveOmit } from '@vueuse/core'
 import {
   SelectContent,
   type SelectContentEmits,
@@ -7,7 +8,6 @@ import {
   SelectViewport,
   useForwardPropsEmits,
 } from 'radix-vue'
-import { computed } from 'vue'
 import { cn } from '../../../utils'
 import SelectScrollDownButton from './SelectScrollDownButton.vue'
 import SelectScrollUpButton from './SelectScrollUpButton.vue'
@@ -24,11 +24,7 @@ const props = withDefaults(
 )
 const emits = defineEmits<SelectContentEmits>()
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
-
-  return delegated
-})
+const delegatedProps = reactiveOmit(props, ['class', 'dataAnimate'])
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>
@@ -44,6 +40,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
         props.class,
       )
       "
+      :data-animate
     >
       <SelectScrollUpButton
         v-bind="forwarded._selectScrollUpButton"

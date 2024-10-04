@@ -23,6 +23,7 @@ export default [
   'card-header',
   'card-title',
   'checkbox',
+  'data-animate',
   'dialog',
   'dialog-close',
   'dialog-content',
